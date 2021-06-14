@@ -1,6 +1,10 @@
 export const getIsLogged = (state) => state.auth;
 
-export const getAdverts = (state) => state.adverts.data;
+export const getAdverts = (state) =>
+	state.adverts.data.sort((advert1, advert2) => {
+		if (advert1.updatedAt < advert2.updatedAt) return 1;
+		return -1;
+	});
 
 export const getAdvertsLoaded = (state) => state.adverts.loaded;
 

@@ -17,7 +17,7 @@ import {
 	ADVERT_DELETED_REQUEST,
 } from './types';
 
-const initialState = {
+export const initialState = {
 	auth: false,
 	adverts: {
 		loaded: false,
