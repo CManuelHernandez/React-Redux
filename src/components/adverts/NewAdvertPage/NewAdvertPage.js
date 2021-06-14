@@ -1,20 +1,21 @@
 import React from 'react';
 import T from 'prop-types';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { createAdvert } from '../../../api/adverts';
-import usePromise from '../../../hooks/usePromise';
 import Layout from '../../layout';
 import NewAdvertForm from './NewAdvertForm';
 
-function NewAdvertPage({ history }) {
-  const { isPending: isLoading, error, execute } = usePromise(null);
+import { advertCreatedAction } from '../../../store/actions';
+import { getUi } from '../../../store/selectors';
+import { useDispatch } from 'react-redux';
 
-  const handleSubmit = newAdvert => {
-    execute(createAdvert(newAdvert)).then(({ id }) =>
-      history.push(`/adverts/${id}`)
-    );
-  };
+function NewAdvertPage({ error }) {
+  const dispatch = useDispatch();
+
+	const handleSubmit = async (newAdvert) => {
+		await dispatch(advertCreatedAction(newAdvert));
+	};
 
   if (error?.statusCode === 401) {
     return <Redirect to="/login" />;
@@ -33,4 +34,17 @@ NewAdvertPage.propTypes = {
   }).isRequired,
 };
 
-export default NewAdvertPage;
+NewAdvertPage.defaultProps = {
+  loading: false,
+  error: null,
+};
+
+const mapStateToProps = state => ({
+  ...getUi(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+  onNewAdvert: newAdvert => dispatch(advertCreatedAction(newAdvert)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewAdvertPage);

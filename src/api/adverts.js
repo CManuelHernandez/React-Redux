@@ -8,23 +8,23 @@ const mapAdvert = ({ photo, ...advert }) => ({
   photo: photo ? `${process.env.REACT_APP_API_BASE_URL}${photo}` : photo,
 });
 
-export const getTags = () => {
+export const getAllTags = () => {
   return client.get(`${advertsPath}/tags`);
 };
 
-export const getAdverts = () => {
+export const getAllAdverts = () => {
   return client.get(`${advertsPath}`);
 };
 
-export const getAdvert = advertId => {
+export const getAdvert = (advertId) => {
   return client.get(`${advertsPath}/${advertId}`).then(mapAdvert);
 };
 
-export const deleteAdvert = advertId => {
+export const deleteAdvert = (advertId) => {
   return client.delete(`${advertsPath}/${advertId}`);
 };
 
-export const createAdvert = withFormData(newAdvert => {
+export const createdAdvert = withFormData((newAdvert) => {
   return client.post(advertsPath, newAdvert);
 });
 
